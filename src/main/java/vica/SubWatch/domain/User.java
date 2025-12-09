@@ -2,6 +2,7 @@ package vica.SubWatch.domain;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -23,9 +24,22 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        String authority = "ROLE_" + role.name();
+        return List.of(new SimpleGrantedAuthority(authority));
     }
 
     public String getPassword() {
@@ -57,11 +71,12 @@ public class User implements UserDetails {
         return true;
     }
 
-    public User(Long id, String name, String email, String password) {
-        this.id = id;
+    public User(String name, Long id, String email, String password, Role role) {
         this.name = name;
+        this.id = id;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public User() {

@@ -4,6 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vica.SubWatch.domain.Role;
 import vica.SubWatch.domain.User;
 import vica.SubWatch.domain.UserLoginDTO;
 import vica.SubWatch.domain.UserRegisterDTO;
@@ -37,6 +38,7 @@ public class UserService {
         user.setEmail(userRegisterDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setName(userRegisterDTO.getName());
+        user.setRole(Role.USER);
 
         return userRepository.save(user);
     }
