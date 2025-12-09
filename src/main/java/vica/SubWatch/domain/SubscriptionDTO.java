@@ -31,6 +31,20 @@ public class SubscriptionDTO {
     @Size(max = 1000)
     private String notes;
 
+    @NotNull
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public SubscriptionDTO() {
+    }
+
     public SubscriptionDTO(String name, Currency currency, BigDecimal price, BillingPeriod billingPeriod, LocalDate nextBillingDate, Long categoryId, String notes, Boolean autoRenew) {
         this.name = name;
         this.currency = currency;

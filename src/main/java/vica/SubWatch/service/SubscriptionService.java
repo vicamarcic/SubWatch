@@ -10,6 +10,8 @@ import vica.SubWatch.domain.User;
 import vica.SubWatch.repository.CategoryRepository;
 import vica.SubWatch.repository.SubscriptionRepository;
 
+import java.util.List;
+
 @Service
 public class SubscriptionService {
 
@@ -43,5 +45,33 @@ public class SubscriptionService {
         subscription.setNotes(dto.getNotes());
 
         subscriptionRepository.save(subscription);
+    }
+
+    @Transactional
+    public List<SubscriptionDTO> getSubscriptionsForUser(User currentUser) {
+        List<Subscription> subscriptions = subscriptionRepository.findAllByUser(currentUser);
+
+        return subscriptions.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    private SubscriptionDTO toDto(Subscription s) {
+        SubscriptionDTO dto = new SubscriptionDTO();
+
+        dto.setId(s.getId());
+        dto.setName(s.getName());
+        dto.setPrice(s.getPrice());
+        dto.setCurrency(s.getCurrency());
+        dto.setBillingPeriod(s.getBillingPeriod());
+        dto.setNextBillingDate(s.getNextBillingDate());
+        dto.setAutoRenew(s.isAutoRenew());
+        dto.setNotes(s.getNotes());
+
+        if (s.getCategory() != null) {
+            dto.setCategoryId(s.getCategory().getId());
+        }
+
+        return dto;
     }
 }
