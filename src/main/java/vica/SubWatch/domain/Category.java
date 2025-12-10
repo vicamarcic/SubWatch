@@ -1,7 +1,6 @@
 package vica.SubWatch.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 @Entity
 public class Category {
@@ -13,7 +12,6 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    private String color;
 
     public Long getId() {
         return id;
@@ -31,20 +29,12 @@ public class Category {
         this.name = name;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
 
     public Category() {
     }
 
-    public Category(Long id, String color, String name) {
+    public Category(Long id, String name) {
         this.id = id;
-        this.color = color;
         this.name = name;
     }
 }

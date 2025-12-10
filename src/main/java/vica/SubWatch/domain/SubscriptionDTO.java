@@ -23,7 +23,7 @@ public class SubscriptionDTO {
     @FutureOrPresent(message = "nextBillingDate can't be in the past!")
     private LocalDate nextBillingDate;
 
-    private Long categoryId;
+    private String categoryName;
 
     @NotNull
     private Boolean autoRenew = true;
@@ -31,8 +31,15 @@ public class SubscriptionDTO {
     @Size(max = 1000)
     private String notes;
 
-    @NotNull
     private Long id;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public Long getId() {
         return id;
@@ -45,16 +52,7 @@ public class SubscriptionDTO {
     public SubscriptionDTO() {
     }
 
-    public SubscriptionDTO(String name, Currency currency, BigDecimal price, BillingPeriod billingPeriod, LocalDate nextBillingDate, Long categoryId, String notes, Boolean autoRenew) {
-        this.name = name;
-        this.currency = currency;
-        this.price = price;
-        this.billingPeriod = billingPeriod;
-        this.nextBillingDate = nextBillingDate;
-        this.categoryId = categoryId;
-        this.notes = notes;
-        this.autoRenew = autoRenew;
-    }
+
 
     public String getName() {
         return name;
@@ -94,14 +92,6 @@ public class SubscriptionDTO {
 
     public void setBillingPeriod(BillingPeriod billingPeriod) {
         this.billingPeriod = billingPeriod;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getNotes() {

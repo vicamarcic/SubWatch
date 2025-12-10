@@ -33,12 +33,30 @@ public class SubscriptionController {
 
     @GetMapping("/my")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<List<SubscriptionDTO>> getMySubscriptions(
-            @AuthenticationPrincipal User currentUser) {
-
-        List<SubscriptionDTO> subscriptions =
-                subscriptionService.getSubscriptionsForUser(currentUser);
+    public ResponseEntity<List<SubscriptionDTO>> getMySubscriptions(@AuthenticationPrincipal User currentUser) {
+        List<SubscriptionDTO> subscriptions  = subscriptionService.getSubscriptionsForUser(currentUser);
 
         return ResponseEntity.ok(subscriptions);
+    }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<ApiResponse> updateSubscription(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User currentUser,
+            @Valid @RequestBody SubscriptionDTO dto) {
+
+        subscriptionService.updateSubscription(currentUser, id, dto);
+        return ResponseEntity.ok(new ApiResponse("Subscription updated successfully"));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<ApiResponse> deleteSubscription(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User currentUser) {
+
+        subscriptionService.deleteSubscription(currentUser, id);
+        return ResponseEntity.ok(new ApiResponse("Subscription deleted successfully"));
     }
 }

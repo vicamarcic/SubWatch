@@ -2,6 +2,7 @@ package vica.SubWatch.service;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vica.SubWatch.domain.Category;
 import vica.SubWatch.domain.Subscription;
@@ -15,8 +16,11 @@ import java.util.List;
 @Service
 public class SubscriptionService {
 
-    private SubscriptionRepository subscriptionRepository;
-    private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryService categoryService;
+
+    private final SubscriptionRepository subscriptionRepository;
+    private final CategoryRepository categoryRepository;
 
     public SubscriptionService(SubscriptionRepository subscriptionRepository, CategoryRepository categoryRepository) {
         this.subscriptionRepository = subscriptionRepository;
@@ -26,11 +30,7 @@ public class SubscriptionService {
     @Transactional
     public void createSubscription(User currentUser, @Valid SubscriptionDTO dto) {
 
-        Category category = null;
-        if(dto.getCategoryId()!=null) {
-            category = categoryRepository.findById(dto.getCategoryId())
-                    .orElseThrow(() -> new IllegalArgumentException("Category not found with id: " + dto.getCategoryId()));
-        }
+        Category category = categoryService.findOrCreateCategory(dto.getCategoryName());
 
         Subscription subscription = new Subscription();
 
@@ -69,9 +69,42 @@ public class SubscriptionService {
         dto.setNotes(s.getNotes());
 
         if (s.getCategory() != null) {
-            dto.setCategoryId(s.getCategory().getId());
+            dto.setCategoryName(s.getCategory().getName());
         }
 
         return dto;
+    }
+
+    @Transactional
+    public void updateSubscription(User currentUser, Long subscriptionId, @Valid SubscriptionDTO dto) {
+
+        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Subscription not found with id: " + subscriptionId
+                ));
+
+        Category category = categoryService.findOrCreateCategory(dto.getCategoryName());
+
+        subscription.setName(dto.getName());
+        subscription.setPrice(dto.getPrice());
+        subscription.setCurrency(dto.getCurrency());
+        subscription.setBillingPeriod(dto.getBillingPeriod());
+        subscription.setNextBillingDate(dto.getNextBillingDate());
+        subscription.setCategory(category);
+        subscription.setAutoRenew(dto.getAutoRenew());
+        subscription.setNotes(dto.getNotes());
+
+        subscriptionRepository.save(subscription);
+    }
+
+    @Transactional
+    public void deleteSubscription(User currentUser, Long subscriptionId) {
+
+        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Subscription not found with id: " + subscriptionId
+                ));
+
+        subscriptionRepository.delete(subscription);
     }
 }
