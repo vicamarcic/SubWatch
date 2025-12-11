@@ -1,5 +1,6 @@
 package vica.SubWatch.domain;
 
+
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -110,3 +111,4 @@ public class SubscriptionDTO {
         this.autoRenew = autoRenew;
     }
 }
+

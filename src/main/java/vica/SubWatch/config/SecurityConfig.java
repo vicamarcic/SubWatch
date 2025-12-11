@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/register", "/user/login").permitAll()
                         .requestMatchers("/api/subscriptions/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/categories/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/stats/**").hasAnyRole("USER","ADMIN")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
