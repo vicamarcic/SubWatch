@@ -61,4 +61,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
             @Param("fromDate") LocalDate from,
             @Param("toDate") LocalDate to
     );
+
+    List<Subscription> findByNextBillingDate(LocalDate targetDate);
 }
