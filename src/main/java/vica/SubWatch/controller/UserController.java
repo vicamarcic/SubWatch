@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import vica.SubWatch.domain.LoginResponse;
-import vica.SubWatch.domain.User;
-import vica.SubWatch.domain.UserLoginDTO;
-import vica.SubWatch.domain.UserRegisterDTO;
+import vica.SubWatch.domain.*;
 import vica.SubWatch.service.JwtService;
 import vica.SubWatch.service.UserService;
 
@@ -46,6 +43,16 @@ public class UserController {
         loginResponse.setUserId(authenticatedUser.getId());
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
+        boolean isChanged = userService.changePassword(request.getEmail(), request.getNewPassword());
+        if (isChanged) {
+            return ResponseEntity.ok("Password changed successfully");
+        } else {
+            return ResponseEntity.status(400).body("Password change failed");
+        }
     }
 
 
