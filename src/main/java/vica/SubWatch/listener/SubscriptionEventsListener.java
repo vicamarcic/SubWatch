@@ -1,5 +1,6 @@
 package vica.SubWatch.listener;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.event.TransactionPhase;
@@ -16,7 +17,7 @@ public class SubscriptionEventsListener {
     public SubscriptionEventsListener(EmailService emailService) {
         this.emailService = emailService;
     }
-
+    @Async("mailExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onCreated(SubscriptionCreatedEvent event) {
         emailService.sendSubscriptionCreatedEmail(
@@ -25,7 +26,7 @@ public class SubscriptionEventsListener {
                 event.subscriptionName()
         );
     }
-
+    @Async("mailExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onUpdated(SubscriptionUpdatedEvent event) {
         emailService.sendSubscriptionUpdatedEmail(
@@ -34,7 +35,7 @@ public class SubscriptionEventsListener {
                 event.subscriptionName()
         );
     }
-
+    @Async("mailExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onDeleted(SubscriptionDeletedEvent event) {
         emailService.sendSubscriptionDeletedEmail(

@@ -1,5 +1,6 @@
 package vica.SubWatch.listener;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.event.TransactionPhase;
@@ -15,6 +16,7 @@ public class UserRegisteredListener {
         this.emailService = emailService;
     }
 
+    @Async("mailExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onUserRegistered(UserRegisteredEvent event) {
         emailService.sendRegistrationSuccessEmail(event.email(), event.displayName());

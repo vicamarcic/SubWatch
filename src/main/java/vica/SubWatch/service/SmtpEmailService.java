@@ -24,7 +24,6 @@ public class SmtpEmailService implements EmailService {
     }
 
     @Override
-    @Async
     public void sendRegistrationSuccessEmail(String toEmail, String displayName) {
         String subject = "Welcome to SubWatch! ✅ Your account is ready";
         String text = buildText(displayName);
@@ -60,7 +59,6 @@ public class SmtpEmailService implements EmailService {
     }
 
     @Override
-    @Async
     public void sendSubscriptionCreatedEmail(String toEmail, String displayName, String subscriptionName) {
         String subject = "SubWatch update ✅ Subscription added";
         String text = buildSubscriptionCreatedText(displayName, subscriptionName);
@@ -79,7 +77,6 @@ public class SmtpEmailService implements EmailService {
     }
 
     @Override
-    @Async
     public void sendSubscriptionUpdatedEmail(String toEmail, String displayName, String subscriptionName) {
         String subject = "SubWatch update ✅ Subscription updated";
         String text = buildSubscriptionUpdatedText(displayName, subscriptionName);
@@ -98,7 +95,6 @@ public class SmtpEmailService implements EmailService {
     }
 
     @Override
-    @Async
     public void sendSubscriptionDeletedEmail(String toEmail, String displayName, String subscriptionName) {
         String subject = "SubWatch update ✅ Subscription removed";
         String text = buildSubscriptionDeletedText(displayName, subscriptionName);
