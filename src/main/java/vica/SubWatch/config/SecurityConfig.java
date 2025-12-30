@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/categories/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/stats/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers("/api/notifications/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/ws/subwatch", "/ws/subwatch/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
