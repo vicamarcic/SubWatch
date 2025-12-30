@@ -26,6 +26,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/subwatch")
                 .setAllowedOriginPatterns("*");
+        registry.setPreserveReceiveOrder(true);
     }
 
     @Autowired
@@ -36,10 +37,11 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.setApplicationDestinationPrefixes("/app");
-
+        config.setUserDestinationPrefix("/user");
         config.enableSimpleBroker("/topic", "/queue")
                 .setHeartbeatValue(new long[]{10000, 20000})
                 .setTaskScheduler(this.messageBrokerTaskScheduler);
+        config.setPreservePublishOrder(true);
     }
 
     @Override
