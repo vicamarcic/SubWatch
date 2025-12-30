@@ -52,7 +52,7 @@ public class NotificationService {
         User user = subscription.getUser();
         LocalDate billingDate = subscription.getNextBillingDate();
 
-        boolean alreadyExists = notificationRepository.existsByUserIdAndSubscriptionIdAndBillingDateAndDaysBefore(
+        boolean alreadyExists = notificationRepository.existsSameNotification(
                 user.getId(),
                 subscription.getId(),
                 billingDate,
