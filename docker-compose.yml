@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8090:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/subwatch
+      SPRING_DATASOURCE_USERNAME: viktor
+      SPRING_DATASOURCE_PASSWORD: 2401
+      MAIL_USERNAME: your@gmail.com
+      MAIL_PASSWORD: your_app_password
+
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: viktor
+      POSTGRES_PASSWORD: 2401
+      POSTGRES_DB: subwatch
+    ports:
+      - "5433:5432"
+    volumes:
+      - subwatch-data:/var/lib/postgresql/data
+
+volumes:
+  subwatch-data:
